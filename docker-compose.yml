@@ -1,0 +1,15 @@
+services:
+  iodine:
+    build: .
+    container_name: iodine-server
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    ports:
+      - "53:53/udp"
+    environment:
+      - IODINE_PASSWORD=${IODINE_PASSWORD}
+    entrypoint: >
+      sh -c "iodined -f -c -P \"$$IODINE_PASSWORD\" 10.0.0.1 tunnel.214707.xyz"
